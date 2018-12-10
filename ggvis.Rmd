@@ -1,0 +1,60 @@
+---
+title: "practice_ggvis"
+author: "Sky Liu"
+date: "12/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+pacman::p_load(
+  "ggvis",
+  "dplyr",
+  "shiny"
+)
+```
+
+## Overview
+
+This file is a quick learning of ggvis package.
+ggvis is a package for interactive data visualization in R. It is similar to ggplot2. The biggest character of this package is that it combines the best of R and web so it could be used at a local Rstudio or on a webpage. 
+
+The tutorial is found from Rblogger. The link to the tutorial
+is:
+https://ggvis.rstudio.com
+https://ggvis.rstudio.com/cookbook.html
+https://ggvis.rstudio.com/interactivity.html
+https://github.com/rstudio/ggvis/tree/master/demo/apps/basic
+
+
+
+##Application
+
+We use the built-in data **ToothGrowth**
+
+```{r}
+data("USArrests")
+data<-as.data.frame(USArrests)
+head(USArrests)
+```
+###Scatterplot with Regression Line
+```{r}
+data %>% 
+  ggvis(~UrbanPop, ~Murder) %>%
+  layer_points() %>%
+  layer_model_predictions(model = "lm", se = TRUE)
+```
+###Histogram
+```{r}
+
+data %>% ggvis(~Murder) %>% layer_histograms(width=0.5, boundary=0)
+```
+###Adding Interaction
+
+```{r}
+
+data %>% 
+  ggvis(~Murder) %>% 
+  layer_histograms(width =  input_slider(0, 2, step = 0.10, label = "width"),
+                   center = input_slider(0, 2, step = 0.05, label = "center"))
+```
